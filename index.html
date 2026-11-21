@@ -4,45 +4,44 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ZYROX — Think Beyond</title>
-
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
+<meta name="theme-color" content="#090914">
+<title>ZYROX AI — Think Beyond</title>
 
 <style>
 :root {
-  --bg: #09090f;
-  --panel: #11111b;
-  --panel2: #181827;
-  --border: #29283b;
-  --text: #f4f1ff;
-  --muted: #9995ad;
-  --purple: #8b5cf6;
-  --purple2: #6d42d8;
-  --user: #29213e;
-  --danger: #ff647c;
+  --bg: #090914;
+  --panel: #111121;
+  --panel2: #17172a;
+  --border: rgba(255,255,255,.09);
+  --text: #f4f3ff;
+  --muted: #9998b2;
+  --accent: #9270ff;
+  --accent2: #6848dc;
+  --danger: #ff6c7a;
 }
 
 * { box-sizing: border-box; }
 
 body {
   margin: 0;
-  height: 100vh;
-  overflow: hidden;
+  font-family: Inter, Arial, sans-serif;
   background: var(--bg);
   color: var(--text);
-  font-family: Inter, system-ui, Arial, sans-serif;
+  height: 100dvh;
+  overflow: hidden;
 }
 
-button, textarea, input { font: inherit; }
+button, textarea, input, select {
+  font: inherit;
+}
 
 button { cursor: pointer; }
 
 .app {
   display: flex;
-  height: 100vh;
+  height: 100dvh;
   width: 100%;
+  overflow: hidden;
 }
 
 /* SIDEBAR */
@@ -50,98 +49,111 @@ button { cursor: pointer; }
 .sidebar {
   width: 270px;
   min-width: 270px;
-  background: var(--panel);
+  background: #0e0e1b;
   border-right: 1px solid var(--border);
   display: flex;
   flex-direction: column;
-  padding: 18px;
-  transition: transform .25s ease;
+  padding: 18px 14px;
   z-index: 20;
+  transition: transform .25s ease;
 }
 
 .brand {
-  font-size: 25px;
-  font-weight: 850;
-  letter-spacing: 2px;
-  margin: 8px 0 25px;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 8px 8px 22px;
 }
 
-.brand span { color: var(--purple); }
+.logo {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: linear-gradient(135deg,#a58aff,#5937ce);
+  display: grid;
+  place-items: center;
+  font-size: 20px;
+  font-weight: 900;
+  box-shadow: 0 5px 25px #754bff55;
+}
+
+.brand-name {
+  font-size: 21px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.brand-sub {
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 2px;
+  margin-top: 3px;
+}
 
 .new-chat {
-  background: linear-gradient(135deg,var(--purple),var(--purple2));
+  border: 1px solid #7958e8;
+  background: linear-gradient(120deg,#7654df,#5132b4);
   color: white;
-  border: 0;
   border-radius: 12px;
   padding: 13px;
   font-weight: 700;
-  width: 100%;
-  margin-bottom: 20px;
+  margin-bottom: 22px;
 }
 
-.side-label {
+.side-heading {
   color: var(--muted);
   font-size: 11px;
+  font-weight: 700;
   letter-spacing: 1.5px;
-  margin: 8px 0;
+  padding: 8px;
 }
 
 .history {
   flex: 1;
   overflow-y: auto;
+  min-height: 0;
 }
 
-.chat-item {
-  padding: 11px;
-  border-radius: 9px;
-  color: var(--muted);
-  cursor: pointer;
+.history-item {
   display: flex;
-  justify-content: space-between;
-  gap: 6px;
-  margin-bottom: 4px;
+  align-items: center;
+  gap: 7px;
+  padding: 10px;
+  border-radius: 9px;
+  color: #c9c7df;
+  cursor: pointer;
   font-size: 13px;
+  margin-bottom: 4px;
 }
 
-.chat-item:hover, .chat-item.active {
+.history-item:hover,
+.history-item.active {
   background: var(--panel2);
   color: white;
 }
 
-.chat-item-title {
+.history-title {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  flex: 1;
 }
 
-.chat-actions {
-  display: flex;
-  gap: 5px;
-}
-
-.chat-actions button {
-  background: none;
-  border: 0;
+.delete-chat {
   color: var(--muted);
-  padding: 0 2px;
-}
-
-.side-bottom {
-  border-top: 1px solid var(--border);
-  padding-top: 15px;
-}
-
-.side-bottom button {
-  width: 100%;
-  text-align: left;
+  border: none;
   background: transparent;
-  color: var(--muted);
-  border: 0;
-  padding: 9px;
-  border-radius: 8px;
+  padding: 4px;
 }
 
-.side-bottom button:hover { background: var(--panel2); color: white; }
+.delete-chat:hover { color: var(--danger); }
+
+.sidebar-bottom {
+  border-top: 1px solid var(--border);
+  padding-top: 13px;
+  color: var(--muted);
+  font-size: 12px;
+}
 
 /* MAIN */
 
@@ -169,116 +181,127 @@ button { cursor: pointer; }
   gap: 12px;
 }
 
-.top-title {
-  font-weight: 750;
-  letter-spacing: .5px;
+.menu-btn {
+  display: none;
+  background: transparent;
+  border: 0;
+  color: white;
+  font-size: 22px;
 }
 
 .status {
-  color: #5ddba0;
-  font-size: 11px;
-  background: #123225;
-  border-radius: 20px;
-  padding: 5px 9px;
+  color: #9d8aff;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #65e5a1;
+  box-shadow: 0 0 9px #65e5a1;
 }
 
 .mode-select {
   background: var(--panel2);
   color: white;
   border: 1px solid var(--border);
-  padding: 9px 12px;
-  border-radius: 10px;
+  border-radius: 9px;
+  padding: 9px 11px;
   outline: none;
-  max-width: 145px;
+  max-width: 130px;
 }
 
 .icon-btn {
-  background: var(--panel2);
   border: 1px solid var(--border);
+  background: var(--panel);
   color: white;
-  border-radius: 9px;
   padding: 9px 11px;
+  border-radius: 9px;
 }
 
-/* CHAT AREA */
+.icon-btn:hover { background: var(--panel2); }
+
+/* CHAT */
 
 .chat-area {
   flex: 1;
   overflow-y: auto;
-  padding: 30px 18px 45px;
+  padding: 28px 16px 30px;
   scroll-behavior: smooth;
 }
 
-.chat-inner {
+.messages {
   max-width: 850px;
   margin: auto;
 }
 
 .welcome {
-  min-height: 65vh;
+  min-height: 55vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   text-align: center;
 }
 
-.logo-glow {
-  width: 65px;
-  height: 65px;
-  border-radius: 22px;
+.welcome-logo {
+  width: 76px;
+  height: 76px;
+  border-radius: 24px;
   display: grid;
   place-items: center;
-  font-size: 30px;
+  font-size: 36px;
   font-weight: 900;
-  background: linear-gradient(135deg,#a78bfa,#6d42d8);
-  box-shadow: 0 0 45px #8b5cf655;
-  margin-bottom: 20px;
+  background: linear-gradient(135deg,#a58aff,#5937ce);
+  box-shadow: 0 8px 45px #7955ff45;
+  margin-bottom: 22px;
 }
 
 .welcome h1 {
   font-size: clamp(28px,5vw,43px);
-  margin: 5px 0;
+  margin: 0 0 12px;
+  letter-spacing: -1px;
 }
 
 .gradient-text {
-  background: linear-gradient(90deg,#c4a8ff,#8b5cf6,#d5baff);
-  background-clip: text;
-  -webkit-background-clip: text;
+  background: linear-gradient(90deg,#b39aff,#8b72ff,#d2a6ff);
   color: transparent;
+  background-clip: text;
 }
 
 .welcome p {
   color: var(--muted);
-  max-width: 520px;
+  max-width: 460px;
   line-height: 1.7;
+  margin: 0 0 25px;
 }
 
 .suggestions {
   display: grid;
   grid-template-columns: repeat(2,minmax(0,1fr));
-  gap: 12px;
-  width: 100%;
-  max-width: 620px;
-  margin-top: 25px;
+  gap: 10px;
+  width: min(100%,550px);
 }
 
 .suggestion {
   text-align: left;
   border: 1px solid var(--border);
   background: var(--panel);
-  color: white;
-  border-radius: 13px;
-  padding: 15px;
+  color: #dedcf2;
+  border-radius: 12px;
+  padding: 14px;
+  font-size: 13px;
   line-height: 1.5;
 }
 
 .suggestion:hover {
-  border-color: var(--purple);
-  transform: translateY(-2px);
+  border-color: #8567ed;
+  background: var(--panel2);
 }
-
-/* MESSAGES */
 
 .message {
   display: flex;
@@ -288,218 +311,239 @@ button { cursor: pointer; }
 }
 
 .avatar {
+  flex-shrink: 0;
   width: 34px;
   height: 34px;
-  min-width: 34px;
   border-radius: 11px;
   display: grid;
   place-items: center;
   font-weight: 800;
-  background: linear-gradient(135deg,#8b5cf6,#5432a8);
+  font-size: 13px;
 }
 
-.user-avatar { background: #393047; }
+.user-avatar { background: #292442; }
+.ai-avatar { background: linear-gradient(135deg,#9472ff,#5937c6); }
 
-.message-content {
+.message-body {
   min-width: 0;
-  max-width: calc(100% - 46px);
+  flex: 1;
   line-height: 1.75;
   overflow-wrap: anywhere;
 }
 
-.message.user .message-content {
-  background: var(--user);
-  padding: 12px 16px;
-  border-radius: 5px 15px 15px 15px;
+.message-role {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 5px;
+  font-weight: 700;
 }
 
-.message-content p { margin: 0 0 12px; }
-.message-content p:last-child { margin-bottom: 0; }
+.message-content {
+  font-size: 14px;
+  color: #e9e7f5;
+}
+
+.message-content p { margin: 7px 0 13px; }
+.message-content h1,
+.message-content h2,
+.message-content h3 { line-height: 1.3; }
 
 .message-content pre {
   background: #080811;
   border: 1px solid var(--border);
-  padding: 15px;
-  overflow-x: auto;
+  padding: 14px;
   border-radius: 10px;
+  overflow-x: auto;
 }
 
 .message-content code {
-  background: #262039;
-  padding: 2px 5px;
-  border-radius: 5px;
-  font-size: .9em;
+  font-family: Consolas, monospace;
+  background: #24213b;
+  border-radius: 4px;
+  padding: 2px 4px;
 }
 
 .message-content pre code {
-  background: none;
+  background: transparent;
   padding: 0;
 }
 
 .message-content table {
   border-collapse: collapse;
   width: 100%;
-  margin: 12px 0;
+  display: block;
+  overflow-x: auto;
 }
 
-.message-content th, .message-content td {
+.message-content th,
+.message-content td {
   border: 1px solid var(--border);
-  padding: 9px;
+  padding: 8px;
   text-align: left;
 }
 
-.message-content th { background: var(--panel2); }
-
-.message-tools {
-  display: flex;
-  gap: 7px;
-  margin-top: 10px;
-  flex-wrap: wrap;
+.message-content blockquote {
+  border-left: 3px solid var(--accent);
+  padding-left: 12px;
+  color: #c7c0e5;
 }
 
-.message-tools button {
-  color: var(--muted);
+.message-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.message-actions button {
   background: transparent;
+  color: var(--muted);
   border: 1px solid var(--border);
-  border-radius: 7px;
   padding: 5px 9px;
+  border-radius: 7px;
   font-size: 11px;
 }
 
-.message-tools button:hover {
-  color: white;
-  border-color: var(--purple);
-}
+.message-actions button:hover { color: white; }
 
 .typing {
-  display: flex;
-  gap: 5px;
-  padding: 10px;
-}
-
-.typing span {
-  width: 7px;
-  height: 7px;
-  background: var(--purple);
-  border-radius: 50%;
-  animation: bounce .8s infinite alternate;
-}
-
-.typing span:nth-child(2) { animation-delay: .2s; }
-.typing span:nth-child(3) { animation-delay: .4s; }
-
-@keyframes bounce {
-  to { transform: translateY(-7px); opacity: .4; }
+  color: var(--muted);
+  font-size: 13px;
+  padding: 12px 0;
 }
 
 /* COMPOSER */
 
 .composer-wrap {
-  padding: 12px 18px 18px;
-  background: linear-gradient(transparent,var(--bg) 25%);
+  padding: 12px 16px 18px;
+  border-top: 1px solid var(--border);
+  background: #0b0b17;
 }
 
-.composer {
+.composer-inner {
   max-width: 850px;
   margin: auto;
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 17px;
-  padding: 12px;
-  box-shadow: 0 8px 35px #0004;
 }
 
-.composer textarea {
-  display: block;
-  width: 100%;
-  resize: none;
-  border: 0;
-  outline: 0;
-  color: white;
-  background: transparent;
-  padding: 7px;
-  min-height: 48px;
-  max-height: 180px;
-  font-size: 15px;
-  line-height: 1.5;
-}
-
-.composer textarea::placeholder { color: #77738b; }
-
-.composer-bottom {
+.attachment-preview {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-}
-
-.composer-tools {
-  display: flex;
-  gap: 7px;
-  flex-wrap: wrap;
-}
-
-.tool-btn {
-  background: var(--panel2);
-  border: 1px solid var(--border);
-  color: var(--muted);
-  padding: 8px 10px;
-  border-radius: 9px;
-  font-size: 12px;
-}
-
-.tool-btn:hover { color: white; border-color: var(--purple); }
-
-.send-btn {
-  background: var(--purple);
-  color: white;
-  border: 0;
-  border-radius: 10px;
-  padding: 10px 17px;
-  font-weight: 700;
-}
-
-.send-btn:hover { background: var(--purple2); }
-
-.disclaimer {
-  text-align: center;
-  color: var(--muted);
-  font-size: 10px;
-  margin-top: 9px;
-}
-
-/* IMAGE PREVIEW */
-
-.image-preview {
-  display: none;
   gap: 9px;
-  flex-wrap: wrap;
-  padding: 8px 5px;
+  overflow-x: auto;
+  margin-bottom: 9px;
 }
 
-.image-preview img {
-  width: 65px;
-  height: 65px;
+.preview-item {
+  position: relative;
+  flex-shrink: 0;
+  width: 72px;
+  height: 72px;
+}
+
+.preview-item img {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   border-radius: 9px;
   border: 1px solid var(--border);
 }
 
-.image-chip {
-  position: relative;
+.remove-image {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  border: none;
+  border-radius: 50%;
+  background: #e45168;
+  color: white;
+  width: 21px;
+  height: 21px;
 }
 
-.image-chip button {
-  position: absolute;
-  right: -5px;
-  top: -5px;
-  background: var(--danger);
-  color: white;
-  border: 0;
-  border-radius: 50%;
-  width: 19px;
-  height: 19px;
+.file-preview {
+  background: var(--panel2);
+  padding: 10px;
+  border-radius: 8px;
+  color: var(--muted);
+  font-size: 12px;
 }
+
+.composer {
+  border: 1px solid #34314f;
+  background: #151525;
+  border-radius: 16px;
+  padding: 10px;
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.composer:focus-within {
+  border-color: #8867f1;
+  box-shadow: 0 0 0 2px #8867f122;
+}
+
+#prompt {
+  flex: 1;
+  min-width: 0;
+  resize: none;
+  max-height: 160px;
+  min-height: 40px;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: white;
+  padding: 10px 4px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+#prompt::placeholder { color: #77758e; }
+
+.tool-btn {
+  flex-shrink: 0;
+  width: 39px;
+  height: 39px;
+  border-radius: 11px;
+  border: 1px solid var(--border);
+  background: #22213a;
+  color: white;
+  font-size: 17px;
+}
+
+.tool-btn:hover { background: #38305c; }
+
+.send-btn {
+  background: linear-gradient(135deg,#9775ff,#6948d8);
+  border: none;
+  color: white;
+}
+
+.send-btn:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+
+.composer-note {
+  color: #77758e;
+  font-size: 10px;
+  text-align: center;
+  margin-top: 9px;
+}
+
+/* PDF BUTTON */
+
+.pdf-button {
+  display: none;
+  border: 1px solid #7559d7;
+  background: #211b3d;
+  color: #d8caff;
+  padding: 8px 12px;
+  border-radius: 9px;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.pdf-button:hover { background: #33275d; }
 
 /* MOBILE */
 
@@ -511,40 +555,39 @@ button { cursor: pointer; }
   z-index: 15;
 }
 
-@media(max-width:700px) {
+@media(max-width:750px) {
   .sidebar {
     position: fixed;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    transform: translateX(-110%);
-    width: 280px;
+    inset: 0 auto 0 0;
+    height: 100dvh;
+    transform: translateX(-105%);
   }
 
   .sidebar.open { transform: translateX(0); }
   .overlay.show { display: block; }
+  .menu-btn { display: block; }
 
-  .topbar { padding: 0 12px; }
-  .top-title { font-size: 14px; }
-  .status { display: none; }
-
-  .chat-area { padding: 20px 12px; }
-  .composer-wrap { padding: 8px 10px 12px; }
-
-  .suggestions { grid-template-columns: 1fr; }
-  .welcome { min-height: 55vh; }
-
-  .mode-select {
-    max-width: 115px;
-    font-size: 12px;
-    padding: 8px 5px;
-  }
-
+  .topbar { padding: 0 12px; min-height: 60px; }
+  .top-left { gap: 8px; }
   .top-right { gap: 6px; }
+  .status { font-size: 10px; }
+  .mode-select { max-width: 105px; padding: 8px 5px; font-size: 11px; }
+
+  .chat-area { padding: 15px 12px 20px; }
+  .composer-wrap { padding: 10px 10px 13px; }
+  .suggestions { grid-template-columns: 1fr; }
+  .welcome { min-height: 48vh; }
+  .welcome p { font-size: 13px; }
+  .message { gap: 9px; }
+  .avatar { width: 30px; height: 30px; }
+  .message-content { font-size: 13px; }
+  .tool-btn { width: 35px; height: 37px; }
 }
 
-@media(min-width:701px) {
-  .mobile-menu { display: none; }
+@media(max-width:390px) {
+  .status { display: none; }
+  .brand-name { font-size: 19px; }
+  .topbar { padding: 0 8px; }
 }
 </style>
 </head>
@@ -552,861 +595,906 @@ button { cursor: pointer; }
 <body>
 <div class="app">
 
-  <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
-
   <aside class="sidebar" id="sidebar">
-    <div class="brand">ZYRO<span>X</span></div>
+    <div class="brand">
+      <div class="logo">Z</div>
+      <div>
+        <div class="brand-name">ZYROX</div>
+        <div class="brand-sub">THINK BEYOND</div>
+      </div>
+    </div>
 
-    <button class="new-chat" onclick="newChat()">＋ New Chat</button>
+    <button class="new-chat" id="newChatBtn">＋ New Chat</button>
 
-    <div class="side-label">YOUR CONVERSATIONS</div>
+    <div class="side-heading">YOUR CONVERSATIONS</div>
     <div class="history" id="history"></div>
 
-    <div class="side-bottom">
-      <button onclick="exportChats()">⇩ Export conversations</button>
-      <button onclick="clearAllChats()">⌫ Clear all chats</button>
+    <div class="sidebar-bottom">
+      <div>ZYROX AI</div>
+      <div style="margin-top:5px">Your intelligent workspace</div>
     </div>
   </aside>
 
-  <main class="main">
+  <div class="overlay" id="overlay"></div>
 
+  <main class="main">
     <header class="topbar">
       <div class="top-left">
-        <button class="icon-btn mobile-menu" onclick="openSidebar()">☰</button>
-        <div class="top-title">ZYROX <span style="color:var(--purple)">/</span> Chat</div>
-        <div class="status" id="status">● Online</div>
+        <button class="menu-btn" id="menuBtn">☰</button>
+        <div class="status">
+          <span class="status-dot"></span>
+          AI SYSTEM ONLINE
+        </div>
       </div>
 
       <div class="top-right">
-        <select class="mode-select" id="mode" title="Choose response mode">
+        <select class="mode-select" id="modeSelect" title="Response mode">
           <option value="instant">⚡ Instant</option>
           <option value="balanced" selected>◈ Balanced</option>
           <option value="deep">✦ Deep</option>
         </select>
+        <button class="icon-btn" id="exportBtn" title="Export conversation">⇩</button>
       </div>
     </header>
 
     <section class="chat-area" id="chatArea">
-      <div class="chat-inner" id="chatInner"></div>
+      <div class="messages" id="messages"></div>
     </section>
 
-    <div class="composer-wrap">
-      <div class="composer">
+    <section class="composer-wrap">
+      <div class="composer-inner">
 
-        <div class="image-preview" id="imagePreview"></div>
+        <div class="attachment-preview" id="attachmentPreview"></div>
 
-        <textarea
-          id="prompt"
-          placeholder="Message ZYROX... Ask anything."
-          rows="1"
-          onkeydown="handleEnter(event)"
-          oninput="resizeInput(this)"
-        ></textarea>
+        <button class="pdf-button" id="createPdfBtn">
+          ⇩ Create PDF from images
+        </button>
 
-        <div class="composer-bottom">
-          <div class="composer-tools">
-            <button class="tool-btn" onclick="document.getElementById('imageInput').click()">＋ Image</button>
-            <button class="tool-btn" onclick="createImagePDF()">▤ Create PDF</button>
-            <button class="tool-btn" onclick="document.getElementById('fileInput').click()">＋ Text/PDF</button>
-            <button class="tool-btn" id="voiceButton" onclick="toggleVoiceInput()">🎙 Voice</button>
-            <button class="tool-btn" id="speakToggle" onclick="toggleSpeak()">🔊 Read replies: OFF</button>
-          </div>
+        <div class="composer">
+          <input type="file" id="imageInput" accept="image/*" multiple hidden>
+          <input type="file" id="documentInput" accept=".txt,.md,.csv,.json" hidden>
 
-          <button class="send-btn" id="sendButton" onclick="sendMessage()">Send ↑</button>
+          <button class="tool-btn" id="imageBtn" title="Upload images">＋</button>
+          <button class="tool-btn" id="fileBtn" title="Upload text file">▤</button>
+
+          <textarea id="prompt" rows="1" placeholder="Message ZYROX..."></textarea>
+
+          <button class="tool-btn" id="micBtn" title="Voice input">🎙</button>
+          <button class="tool-btn send-btn" id="sendBtn" title="Send message">➤</button>
+          <button class="tool-btn" id="stopBtn" title="Stop response" style="display:none">■</button>
+        </div>
+
+        <div class="composer-note">
+          ZYROX can make mistakes. Check important information.
         </div>
       </div>
-
-      <div class="disclaimer">
-        ZYROX can make mistakes. Check important information.
-      </div>
-    </div>
-
+    </section>
   </main>
 </div>
-
-<input type="file" id="imageInput" accept="image/*" multiple hidden onchange="handleImages(event)">
-<input type="file" id="fileInput" accept=".txt,.md,.csv,.json,.pdf" hidden onchange="handleTextFile(event)">
 
 <script>
 /* =========================================
    ZYROX CONFIGURATION
 ========================================= */
 
-const API_URL = "https://mindx-ai-backend.msdonix7979.workers.dev/api/chat";
+const API_URL =
+  "https://mindx-ai-backend.msdonix7979.workers.dev/api/chat";
+
 const STORAGE_KEY = "mindx-ai-chats-v1";
 
-const SYSTEM_PROMPT = `
-You are ZYROX, a capable, helpful and intelligent AI assistant.
-
-Your goals:
-1. Understand the user's actual question before answering.
-2. Remember the conversation context and connect follow-up questions to earlier messages.
-3. Do not ask the user to repeat information already provided.
-4. Give accurate, clear and useful answers.
-5. Explain difficult concepts in beginner-friendly language when appropriate.
-6. Use headings, bullet points, tables and code blocks when useful.
-7. For coding requests, provide complete, usable code when requested.
-8. If information is uncertain, say so instead of inventing facts.
-9. Follow the user's requested language and format.
-10. Avoid unnecessary repetition and irrelevant information.
-11. Be conversational, respectful and helpful.
-
-You are ZYROX. Do not claim to have capabilities that are not available.
-`;
-
-/* =========================================
-   APP STATE
-========================================= */
+const $ = id => document.getElementById(id);
 
 let chats = [];
-let currentId = null;
-let controller = null;
+let currentChatId = null;
 let uploadedImages = [];
 let pendingFileText = "";
+let pendingFileName = "";
+let abortController = null;
 let recognition = null;
-let listening = false;
-let speakReplies = false;
-
-try {
-  chats = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
-  if (!Array.isArray(chats)) chats = [];
-} catch {
-  chats = [];
-}
-
-function saveChats() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(chats));
-}
-
-function id() {
-  return Date.now().toString(36) + Math.random().toString(36).slice(2,7);
-}
-
-function getCurrentChat() {
-  return chats.find(c => c.id === currentId);
-}
-
-function ensureChat() {
-  if (!getCurrentChat()) newChat();
-  return getCurrentChat();
-}
+let speaking = false;
 
 /* =========================================
-   SIDEBAR
+   STORAGE AND CHAT MANAGEMENT
 ========================================= */
 
-function openSidebar() {
-  document.getElementById("sidebar").classList.add("open");
-  document.getElementById("overlay").classList.add("show");
+function saveChats() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(chats));
+  } catch (error) {
+    console.error("Could not save chats:", error);
+  }
 }
 
-function closeSidebar() {
-  document.getElementById("sidebar").classList.remove("open");
-  document.getElementById("overlay").classList.remove("show");
+function loadChats() {
+  try {
+    chats = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+    if (!Array.isArray(chats)) chats = [];
+  } catch {
+    chats = [];
+  }
+
+  if (chats.length) {
+    currentChatId = chats[0].id;
+  }
+
+  renderHistory();
+  renderCurrentChat();
 }
 
-document.addEventListener("keydown", e => {
-  if (e.key === "Escape") closeSidebar();
-});
+function currentChat() {
+  return chats.find(chat => chat.id === currentChatId);
+}
 
-function newChat() {
+function createChat() {
   const chat = {
-    id: id(),
+    id: Date.now().toString(),
     title: "New conversation",
     messages: [],
-    pinned: false,
-    updated: Date.now()
+    createdAt: Date.now()
   };
 
   chats.unshift(chat);
-  currentId = chat.id;
+  currentChatId = chat.id;
+
   saveChats();
   renderHistory();
-  renderChat();
+  renderCurrentChat();
   closeSidebar();
-  document.getElementById("prompt").focus();
+  $("prompt").focus();
 }
 
-function selectChat(chatId) {
-  currentId = chatId;
+function selectChat(id) {
+  currentChatId = id;
   renderHistory();
-  renderChat();
+  renderCurrentChat();
   closeSidebar();
 }
 
-function renameChat(chatId) {
-  const chat = chats.find(c => c.id === chatId);
-  if (!chat) return;
+function deleteChat(id) {
+  chats = chats.filter(chat => chat.id !== id);
 
-  const name = prompt("Enter conversation name:", chat.title);
-  if (name && name.trim()) {
-    chat.title = name.trim();
-    saveChats();
-    renderHistory();
-  }
-}
-
-function togglePin(chatId) {
-  const chat = chats.find(c => c.id === chatId);
-  if (!chat) return;
-  chat.pinned = !chat.pinned;
-  saveChats();
-  renderHistory();
-}
-
-function deleteChat(chatId) {
-  if (!confirm("Delete this conversation?")) return;
-
-  chats = chats.filter(c => c.id !== chatId);
-
-  if (currentId === chatId) {
-    currentId = chats[0]?.id || null;
+  if (currentChatId === id) {
+    currentChatId = chats[0]?.id || null;
   }
 
-  if (!currentId) newChat();
+  if (!currentChatId) createChat();
 
   saveChats();
   renderHistory();
-  renderChat();
+  renderCurrentChat();
 }
 
 function renderHistory() {
-  const history = document.getElementById("history");
+  const history = $("history");
   history.innerHTML = "";
 
-  const ordered = [...chats].sort((a,b) => {
-    if (a.pinned !== b.pinned) return b.pinned - a.pinned;
-    return b.updated - a.updated;
-  });
-
-  ordered.forEach(chat => {
+  chats.forEach(chat => {
     const item = document.createElement("div");
-    item.className = "chat-item" + (chat.id === currentId ? " active" : "");
+    item.className =
+      "history-item" + (chat.id === currentChatId ? " active" : "");
 
     const title = document.createElement("span");
-    title.className = "chat-item-title";
-    title.textContent = (chat.pinned ? "📌 " : "") + chat.title;
+    title.className = "history-title";
+    title.textContent = chat.title || "New conversation";
+
     title.onclick = () => selectChat(chat.id);
 
-    const actions = document.createElement("span");
-    actions.className = "chat-actions";
-
-    const rename = document.createElement("button");
-    rename.textContent = "✎";
-    rename.title = "Rename";
-    rename.onclick = e => { e.stopPropagation(); renameChat(chat.id); };
-
-    const pin = document.createElement("button");
-    pin.textContent = "⌖";
-    pin.title = "Pin";
-    pin.onclick = e => { e.stopPropagation(); togglePin(chat.id); };
-
     const del = document.createElement("button");
+    del.className = "delete-chat";
     del.textContent = "×";
-    del.title = "Delete";
-    del.onclick = e => { e.stopPropagation(); deleteChat(chat.id); };
+    del.title = "Delete conversation";
+    del.onclick = event => {
+      event.stopPropagation();
+      deleteChat(chat.id);
+    };
 
-    actions.append(rename,pin,del);
-    item.append(title,actions);
+    item.append(title, del);
     history.appendChild(item);
   });
 }
 
-/* =========================================
-   CHAT DISPLAY
-========================================= */
-
-function showWelcome() {
-  return `
-    <div class="welcome">
-      <div class="logo-glow">Z</div>
-      <h1>Think <span class="gradient-text">Beyond.</span></h1>
-      <p>Your ideas, questions and creativity deserve more.
-      Welcome to ZYROX — your intelligent AI workspace.</p>
-
-      <div class="suggestions">
-        <button class="suggestion" onclick="suggest('Explain a difficult topic in simple words.')">
-          📚 <b>Learn something</b><br>
-          <small>Understand any topic step by step.</small>
-        </button>
-
-        <button class="suggestion" onclick="suggest('Help me write a program and explain the code.')">
-          💻 <b>Build something</b><br>
-          <small>Code, debug and create projects.</small>
-        </button>
-
-        <button class="suggestion" onclick="suggest('Give me creative ideas for a new project.')">
-          💡 <b>Explore ideas</b><br>
-          <small>Discover new possibilities.</small>
-        </button>
-
-        <button class="suggestion" onclick="suggest('Help me make a study plan for my exams.')">
-          🎯 <b>Get organized</b><br>
-          <small>Plan your goals and studies.</small>
-        </button>
-      </div>
-    </div>`;
-}
-
-function renderChat() {
-  const inner = document.getElementById("chatInner");
-  const chat = getCurrentChat();
+function renderCurrentChat() {
+  const chat = currentChat();
 
   if (!chat || !chat.messages.length) {
-    inner.innerHTML = showWelcome();
+    renderWelcome();
     return;
   }
 
-  inner.innerHTML = "";
+  $("messages").innerHTML = "";
 
-  chat.messages.forEach((message,index) => {
-    inner.appendChild(createMessageElement(message,index));
+  chat.messages.forEach(message => {
+    addMessageElement(message.role, message.content, false);
   });
 
-  scrollBottom();
+  scrollToBottom();
 }
 
-function createMessageElement(message,index) {
+function renderWelcome() {
+  $("messages").innerHTML = `
+    <div class="welcome">
+      <div class="welcome-logo">Z</div>
+      <h1>Welcome to <span class="gradient-text">ZYROX</span></h1>
+      <p>Your intelligent AI workspace. Ask questions, explore ideas,
+      learn new things and create something amazing.</p>
+
+      <div class="suggestions">
+        <button class="suggestion" data-prompt="Explain artificial intelligence in simple words.">
+          ✦ Explain something difficult
+        </button>
+        <button class="suggestion" data-prompt="Give me creative project ideas.">
+          ◈ Generate creative ideas
+        </button>
+        <button class="suggestion" data-prompt="Help me write a professional email.">
+          ▤ Help me write something
+        </button>
+        <button class="suggestion" data-prompt="Teach me a useful coding concept.">
+          ⌘ Teach me coding
+        </button>
+      </div>
+    </div>
+  `;
+
+  document.querySelectorAll(".suggestion").forEach(button => {
+    button.onclick = () => {
+      $("prompt").value = button.dataset.prompt;
+      $("prompt").focus();
+      autoResize();
+    };
+  });
+}
+
+/* =========================================
+   MESSAGE DISPLAY
+========================================= */
+
+function escapeHTML(value) {
+  return String(value).replace(/[&<>"']/g, char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#039;"
+  })[char]);
+}
+
+function basicMarkdown(text) {
+  let safe = escapeHTML(text);
+
+  safe = safe.replace(/```([\s\S]*?)```/g,
+    (_, code) => `<pre><code>${code.trim()}</code></pre>`);
+
+  safe = safe.replace(/`([^`]+)`/g, "<code>$1</code>");
+  safe = safe.replace(/^### (.*)$/gm, "<h3>$1</h3>");
+  safe = safe.replace(/^## (.*)$/gm, "<h2>$1</h2>");
+  safe = safe.replace(/^# (.*)$/gm, "<h1>$1</h1>");
+  safe = safe.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+  safe = safe.replace(/\*(.*?)\*/g, "<em>$1</em>");
+  safe = safe.replace(/^---$/gm, "<hr>");
+  safe = safe.replace(/^&gt; (.*)$/gm, "<blockquote>$1</blockquote>");
+  safe = safe.replace(/^\s*[-*] (.*)$/gm, "<li>$1</li>");
+  safe = safe.replace(/(<li>.*<\/li>)/gs, "<ul>$1</ul>");
+  safe = safe.replace(/\n/g, "<br>");
+
+  return safe;
+}
+
+function addMessageElement(role, content, shouldScroll = true) {
+  const messages = $("messages");
+
+  const welcome = messages.querySelector(".welcome");
+  if (welcome) messages.innerHTML = "";
+
   const wrapper = document.createElement("div");
-  wrapper.className = "message " + message.role;
+  wrapper.className = "message";
 
   const avatar = document.createElement("div");
-  avatar.className = "avatar" + (message.role === "user" ? " user-avatar" : "");
-  avatar.textContent = message.role === "user" ? "U" : "Z";
+  avatar.className =
+    "avatar " + (role === "user" ? "user-avatar" : "ai-avatar");
+  avatar.textContent = role === "user" ? "Y" : "Z";
 
-  const content = document.createElement("div");
-  content.className = "message-content";
+  const body = document.createElement("div");
+  body.className = "message-body";
 
-  if (message.role === "assistant") {
-    const html = marked.parse(message.content || "");
-    content.innerHTML = DOMPurify.sanitize(html);
+  const roleLabel = document.createElement("div");
+  roleLabel.className = "message-role";
+  roleLabel.textContent = role === "user" ? "YOU" : "ZYROX";
 
-    const tools = document.createElement("div");
-    tools.className = "message-tools";
+  const contentDiv = document.createElement("div");
+  contentDiv.className = "message-content";
+  contentDiv.innerHTML = basicMarkdown(content);
+
+  body.append(roleLabel, contentDiv);
+
+  if (role === "assistant") {
+    const actions = document.createElement("div");
+    actions.className = "message-actions";
 
     const copy = document.createElement("button");
     copy.textContent = "Copy";
     copy.onclick = () => {
-      navigator.clipboard.writeText(message.content || "");
-      copy.textContent = "Copied!";
-      setTimeout(() => copy.textContent = "Copy",1200);
+      navigator.clipboard.writeText(content).then(() => {
+        copy.textContent = "Copied!";
+        setTimeout(() => copy.textContent = "Copy", 1200);
+      });
     };
 
     const speak = document.createElement("button");
-    speak.textContent = "🔊 Read aloud";
-    speak.onclick = () => speakText(message.content || "");
+    speak.textContent = "Speak";
+    speak.onclick = () => speakText(content);
 
-    const pdf = document.createElement("button");
-    pdf.textContent = "Create PDF";
-    pdf.onclick = () => createResponsePDF(message.content || "");
-
-    tools.append(copy,speak,pdf);
-    content.appendChild(tools);
-  } else {
-    content.textContent = message.content || "";
+    actions.append(copy, speak);
+    body.appendChild(actions);
   }
 
-  wrapper.append(avatar,content);
-  return wrapper;
+  wrapper.append(avatar, body);
+  messages.appendChild(wrapper);
+
+  if (shouldScroll) scrollToBottom();
 }
 
-function addMessage(role,content) {
-  const chat = ensureChat();
+function addMessage(role, content) {
+  const chat = currentChat();
+  if (!chat) return;
 
-  chat.messages.push({role,content});
-  chat.updated = Date.now();
+  chat.messages.push({ role, content });
 
-  if (chat.messages.filter(m => m.role === "user").length === 1) {
-    chat.title = content.slice(0,38) || "New conversation";
+  if (role === "user" && chat.title === "New conversation") {
+    chat.title = content.slice(0, 35) || "New conversation";
   }
 
   saveChats();
   renderHistory();
-  renderChat();
+  addMessageElement(role, content);
 }
 
-function scrollBottom() {
-  const area = document.getElementById("chatArea");
+function scrollToBottom() {
+  const area = $("chatArea");
   area.scrollTop = area.scrollHeight;
 }
 
 /* =========================================
-   MODES
+   PDF CREATION — WITH TWO CDN FALLBACKS
 ========================================= */
 
-function getModeInstruction() {
-  const mode = document.getElementById("mode").value;
+let pdfLibraryPromise = null;
 
-  if (mode === "instant") {
-    return "RESPONSE MODE: INSTANT. Prioritize speed, direct answers and concise explanations. Avoid unnecessary detail.";
+function loadScript(src) {
+  return new Promise((resolve, reject) => {
+    const script = document.createElement("script");
+
+    script.src = src;
+    script.async = true;
+
+    script.onload = () => resolve();
+    script.onerror = () => {
+      script.remove();
+      reject(new Error("Could not load PDF library."));
+    };
+
+    document.head.appendChild(script);
+  });
+}
+
+async function loadPDFLibrary() {
+  if (window.jspdf?.jsPDF) return window.jspdf.jsPDF;
+
+  if (pdfLibraryPromise) return pdfLibraryPromise;
+
+  pdfLibraryPromise = (async () => {
+    const sources = [
+      "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js",
+      "https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"
+    ];
+
+    for (const source of sources) {
+      try {
+        await loadScript(source);
+
+        if (window.jspdf?.jsPDF) {
+          return window.jspdf.jsPDF;
+        }
+      } catch (error) {
+        console.warn("PDF library source failed:", source);
+      }
+    }
+
+    throw new Error(
+      "PDF library could not load. Check your internet connection."
+    );
+  })();
+
+  try {
+    return await pdfLibraryPromise;
+  } catch (error) {
+    pdfLibraryPromise = null;
+    throw error;
+  }
+}
+
+function imageFileToJPEG(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onerror = () => reject(new Error("Could not read image."));
+
+    reader.onload = () => {
+      const image = new Image();
+
+      image.onerror = () => reject(new Error("Could not open image."));
+
+      image.onload = () => {
+        const canvas = document.createElement("canvas");
+
+        canvas.width = image.naturalWidth;
+        canvas.height = image.naturalHeight;
+
+        const context = canvas.getContext("2d");
+
+        if (!context) {
+          reject(new Error("Could not process image."));
+          return;
+        }
+
+        context.fillStyle = "#ffffff";
+        context.fillRect(0, 0, canvas.width, canvas.height);
+        context.drawImage(image, 0, 0);
+
+        try {
+          resolve({
+            data: canvas.toDataURL("image/jpeg", 0.92),
+            width: canvas.width,
+            height: canvas.height
+          });
+        } catch {
+          reject(new Error("Could not convert image."));
+        }
+      };
+
+      image.src = reader.result;
+    };
+
+    reader.readAsDataURL(file);
+  });
+}
+
+async function createImagePDF() {
+  if (!uploadedImages.length) {
+    alert("Please upload at least one image first.");
+    return;
   }
 
-  if (mode === "deep") {
-    return "RESPONSE MODE: DEEP. Give thorough explanations, examine important aspects, show step-by-step solutions when useful, and mention relevant limitations. Do not reveal private chain-of-thought; provide concise reasoning summaries instead.";
-  }
+  const button = $("createPdfBtn");
+  button.disabled = true;
+  button.textContent = "Preparing your PDF...";
 
-  return "RESPONSE MODE: BALANCED. Give clear, useful answers with enough explanation and examples, without unnecessary length.";
+  try {
+    const jsPDF = await loadPDFLibrary();
+
+    const pdf = new jsPDF({
+      orientation: "portrait",
+      unit: "mm",
+      format: "a4",
+      compress: true
+    });
+
+    const pageWidth = 210;
+    const pageHeight = 297;
+    const margin = 10;
+
+    for (let index = 0; index < uploadedImages.length; index++) {
+      const file = uploadedImages[index];
+
+      const image = await imageFileToJPEG(file);
+
+      if (index > 0) {
+        pdf.addPage();
+      }
+
+      const availableWidth = pageWidth - margin * 2;
+      const availableHeight = pageHeight - margin * 2;
+
+      const ratio = Math.min(
+        availableWidth / image.width,
+        availableHeight / image.height
+      );
+
+      const width = image.width * ratio;
+      const height = image.height * ratio;
+
+      const x = (pageWidth - width) / 2;
+      const y = (pageHeight - height) / 2;
+
+      pdf.addImage(
+        image.data,
+        "JPEG",
+        x,
+        y,
+        width,
+        height,
+        undefined,
+        "FAST"
+      );
+    }
+
+    pdf.save("ZYROX-Images.pdf");
+
+  } catch (error) {
+    console.error("PDF creation error:", error);
+    alert(
+      error.message ||
+      "Could not create PDF. Please try again."
+    );
+
+  } finally {
+    button.disabled = false;
+    button.textContent = "⇩ Create PDF from images";
+  }
 }
 
 /* =========================================
-   SEND MESSAGE
+   IMAGE UPLOAD AND PREVIEW
 ========================================= */
 
-function suggest(text) {
-  document.getElementById("prompt").value = text;
-  sendMessage();
-}
+function renderAttachments() {
+  const preview = $("attachmentPreview");
+  preview.innerHTML = "";
 
-function handleEnter(e) {
-  if (e.key === "Enter" && !e.shiftKey) {
-    e.preventDefault();
-    sendMessage();
+  uploadedImages.forEach((file, index) => {
+    const item = document.createElement("div");
+    item.className = "preview-item";
+
+    const image = document.createElement("img");
+    image.src = URL.createObjectURL(file);
+
+    const remove = document.createElement("button");
+    remove.className = "remove-image";
+    remove.textContent = "×";
+
+    remove.onclick = () => {
+      uploadedImages.splice(index, 1);
+      renderAttachments();
+    };
+
+    item.append(image, remove);
+    preview.appendChild(item);
+  });
+
+  if (pendingFileName) {
+    const file = document.createElement("div");
+    file.className = "file-preview";
+    file.textContent = "▤ " + pendingFileName;
+
+    preview.appendChild(file);
   }
+
+  $("createPdfBtn").style.display =
+    uploadedImages.length ? "block" : "none";
 }
 
-function resizeInput(el) {
-  el.style.height = "auto";
-  el.style.height = Math.min(el.scrollHeight,180) + "px";
-}
+$("imageBtn").onclick = () => $("imageInput").click();
 
-function setStatus(text,error=false) {
-  const status = document.getElementById("status");
-  status.textContent = text;
-  status.style.color = error ? "#ff647c" : "#5ddba0";
-}
+$("imageInput").onchange = event => {
+  const files = Array.from(event.target.files || []);
 
-function showTyping() {
-  const inner = document.getElementById("chatInner");
+  const validFiles = files.filter(file =>
+    file.type.startsWith("image/")
+  );
 
-  const wrapper = document.createElement("div");
-  wrapper.className = "message";
-  wrapper.id = "typingMessage";
+  uploadedImages.push(...validFiles);
 
-  wrapper.innerHTML = `
-    <div class="avatar">Z</div>
-    <div class="typing"><span></span><span></span><span></span></div>
-  `;
+  renderAttachments();
+  event.target.value = "";
+};
 
-  inner.appendChild(wrapper);
-  scrollBottom();
-}
+$("createPdfBtn").onclick = createImagePDF;
 
-function removeTyping() {
-  document.getElementById("typingMessage")?.remove();
+/* =========================================
+   TEXT FILE UPLOAD
+========================================= */
+
+$("fileBtn").onclick = () => $("documentInput").click();
+
+$("documentInput").onchange = async event => {
+  const file = event.target.files?.[0];
+  if (!file) return;
+
+  try {
+    pendingFileText = await file.text();
+    pendingFileName = file.name;
+
+    renderAttachments();
+
+    $("prompt").value =
+      `Please read and help me with the attached text file: ${file.name}`;
+
+    autoResize();
+
+  } catch {
+    alert("Could not read this file.");
+  }
+
+  event.target.value = "";
+};
+
+/* =========================================
+   SEND MESSAGE TO CLOUDFLARE
+========================================= */
+
+function getMode() {
+  return $("modeSelect").value;
 }
 
 async function sendMessage() {
-  const input = document.getElementById("prompt");
-  const text = input.value.trim();
+  const prompt = $("prompt").value.trim();
 
-  if (!text && !pendingFileText) return;
-  if (controller) return;
+  if (!prompt && !pendingFileText) return;
 
-  const finalText = text + (pendingFileText
-    ? "\n\nUploaded document content:\n" + pendingFileText
-    : "");
+  if (abortController) return;
+
+  if (!currentChatId) createChat();
+
+  let finalText = prompt;
+
+  if (pendingFileText) {
+    finalText +=
+      "\n\nFile name: " + pendingFileName +
+      "\n\nFile contents:\n" + pendingFileText;
+  }
+
+  if (uploadedImages.length) {
+    finalText +=
+      "\n\n[The user has attached " +
+      uploadedImages.length +
+      " image(s). The images are available for creating a PDF in the interface. Do not claim to have viewed their contents.]";
+  }
+
+  $("prompt").value = "";
+  autoResize();
+
+  addMessage("user", finalText);
 
   pendingFileText = "";
-  input.value = "";
-  resizeInput(input);
+  pendingFileName = "";
 
-  addMessage("user",finalText);
+  // Keep image attachments available for PDF creation.
+  renderAttachments();
 
-  const chat = getCurrentChat();
-  const modeInstruction = getModeInstruction();
+  const chat = currentChat();
 
-  const context = chat.messages.slice(-20).map(m => ({
-    role: m.role,
-    content: m.content
-  }));
+  const typing = document.createElement("div");
+  typing.className = "typing";
+  typing.id = "typingIndicator";
+  typing.textContent = "ZYROX is thinking...";
+  $("messages").appendChild(typing);
+  scrollToBottom();
 
-  showTyping();
-  setStatus("● Thinking");
+  abortController = new AbortController();
 
-  controller = new AbortController();
-
-  document.getElementById("sendButton").textContent = "Stop";
-  document.getElementById("sendButton").onclick = stopGeneration;
+  $("sendBtn").style.display = "none";
+  $("stopBtn").style.display = "block";
 
   try {
-    const response = await fetch(API_URL,{
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      signal:controller.signal,
-      body:JSON.stringify({
-        messages:[
-          {
-            role:"system",
-            content:SYSTEM_PROMPT + "\n\n" + modeInstruction
-          },
-          ...context
-        ]
+    const response = await fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      signal: abortController.signal,
+      body: JSON.stringify({
+        messages: chat.messages.slice(-30),
+        mode: getMode()
       })
     });
 
     const data = await response.json();
 
     if (!response.ok) {
-      throw new Error(data.error || "Server error: " + response.status);
+      throw new Error(data.error || "AI request failed.");
     }
 
-    const answer =
-      data.choices?.[0]?.message?.content ||
-      data.reply ||
-      data.message ||
-      "";
+    const reply = data?.choices?.[0]?.message?.content;
 
-    if (!answer) throw new Error("The AI returned an empty response.");
+    if (typeof reply !== "string" || !reply.trim()) {
+      throw new Error("ZYROX returned an empty response.");
+    }
 
-    removeTyping();
-    addMessage("assistant",answer);
+    $("typingIndicator")?.remove();
+    addMessage("assistant", reply);
 
-    if (speakReplies) speakText(answer);
-
-    setStatus("● Online");
-
-  } catch(error) {
-    removeTyping();
+  } catch (error) {
+    $("typingIndicator")?.remove();
 
     if (error.name === "AbortError") {
-      setStatus("● Stopped");
+      addMessage("assistant", "Response stopped.");
     } else {
-      addMessage("assistant","**Connection error:** " + error.message);
-      setStatus("● Connection issue",true);
-    }
-  } finally {
-    controller = null;
-    document.getElementById("sendButton").textContent = "Send ↑";
-    document.getElementById("sendButton").onclick = sendMessage;
-  }
-}
-
-function stopGeneration() {
-  if (controller) controller.abort();
-}
-
-/* =========================================
-   IMAGE UPLOAD AND IMAGE PDF
-========================================= */
-
-function handleImages(event) {
-  const files = Array.from(event.target.files || []);
-
-  files.forEach(file => {
-    if (!file.type.startsWith("image/")) return;
-
-    uploadedImages.push(file);
-  });
-
-  event.target.value = "";
-  renderImagePreview();
-}
-
-function renderImagePreview() {
-  const preview = document.getElementById("imagePreview");
-  preview.innerHTML = "";
-  preview.style.display = uploadedImages.length ? "flex" : "none";
-
-  uploadedImages.forEach((file,index) => {
-    const chip = document.createElement("div");
-    chip.className = "image-chip";
-
-    const img = document.createElement("img");
-    img.src = URL.createObjectURL(file);
-
-    const remove = document.createElement("button");
-    remove.textContent = "×";
-    remove.onclick = () => {
-      URL.revokeObjectURL(img.src);
-      uploadedImages.splice(index,1);
-      renderImagePreview();
-    };
-
-    chip.append(img,remove);
-    preview.appendChild(chip);
-  });
-}
-
-async function createImagePDF() {
-  if (!uploadedImages.length) {
-    alert("Please upload one or more images first.");
-    return;
-  }
-
-  if (!window.jspdf) {
-    alert("PDF library could not load. Check your internet connection and refresh.");
-    return;
-  }
-
-  try {
-    const { jsPDF } = window.jspdf;
-    const pdf = new jsPDF("p","mm","a4");
-
-    const pageWidth = 210;
-    const pageHeight = 297;
-    const margin = 10;
-
-    for (let i=0; i<uploadedImages.length; i++) {
-      const file = uploadedImages[i];
-
-      const data = await readFileAsDataURL(file);
-      const image = await loadImage(data);
-
-      const maxWidth = pageWidth - margin*2;
-      const maxHeight = pageHeight - margin*2;
-
-      const ratio = Math.min(
-        maxWidth/image.width,
-        maxHeight/image.height
+      addMessage(
+        "assistant",
+        "Sorry, I couldn't complete that request.\n\n" +
+        error.message
       );
-
-      const width = image.width*ratio;
-      const height = image.height*ratio;
-
-      const x = (pageWidth-width)/2;
-      const y = (pageHeight-height)/2;
-
-      if (i > 0) pdf.addPage();
-
-      const format = file.type.includes("png") ? "PNG" : "JPEG";
-      pdf.addImage(data,format,x,y,width,height);
     }
 
-    pdf.save("ZYROX-Images.pdf");
-
-  } catch(error) {
-    alert("Could not create PDF: " + error.message);
+  } finally {
+    abortController = null;
+    $("sendBtn").style.display = "block";
+    $("stopBtn").style.display = "none";
+    $("prompt").focus();
   }
 }
 
-function readFileAsDataURL(file) {
-  return new Promise((resolve,reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
-}
+$("sendBtn").onclick = sendMessage;
 
-function loadImage(src) {
-  return new Promise((resolve,reject) => {
-    const img = new Image();
-    img.onload = () => resolve(img);
-    img.onerror = reject;
-    img.src = src;
-  });
-}
+$("stopBtn").onclick = () => {
+  if (abortController) abortController.abort();
+};
 
 /* =========================================
-   TEXT AND PDF DOCUMENT READING
+   TEXTAREA BEHAVIOUR
 ========================================= */
 
-async function handleTextFile(event) {
-  const file = event.target.files?.[0];
-  event.target.value = "";
-  if (!file) return;
-
-  try {
-    if (file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf")) {
-      alert("PDF text extraction is not included in this version. You can use the Image button for images and Create PDF to combine them.");
-      return;
-    }
-
-    const text = await file.text();
-    pendingFileText = text.slice(0,30000);
-
-    document.getElementById("prompt").value =
-      "Please read and help me understand the uploaded document.";
-
-    alert("Document loaded. Press Send to ask ZYROX about it.");
-  } catch(error) {
-    alert("Could not read this file.");
-  }
+function autoResize() {
+  const textarea = $("prompt");
+  textarea.style.height = "auto";
+  textarea.style.height =
+    Math.min(textarea.scrollHeight, 160) + "px";
 }
+
+$("prompt").addEventListener("input", autoResize);
+
+$("prompt").addEventListener("keydown", event => {
+  if (event.key === "Enter" && !event.shiftKey) {
+    event.preventDefault();
+    sendMessage();
+  }
+});
 
 /* =========================================
    VOICE INPUT
 ========================================= */
 
-function toggleVoiceInput() {
-  const SpeechRecognition =
-    window.SpeechRecognition || window.webkitSpeechRecognition;
+const SpeechRecognition =
+  window.SpeechRecognition ||
+  window.webkitSpeechRecognition;
 
-  if (!SpeechRecognition) {
-    alert("Voice input is not supported in this browser. Try an updated version of Chrome.");
-    return;
-  }
-
-  if (listening && recognition) {
-    recognition.stop();
-    return;
-  }
-
+if (SpeechRecognition) {
   recognition = new SpeechRecognition();
   recognition.lang = "en-IN";
   recognition.continuous = false;
-  recognition.interimResults = true;
-
-  recognition.onstart = () => {
-    listening = true;
-    document.getElementById("voiceButton").textContent = "🔴 Listening...";
-  };
+  recognition.interimResults = false;
 
   recognition.onresult = event => {
-    let transcript = "";
-
-    for (let i=0; i<event.results.length; i++) {
-      transcript += event.results[i][0].transcript;
-    }
-
-    document.getElementById("prompt").value = transcript;
-    resizeInput(document.getElementById("prompt"));
+    const spoken = event.results[0][0].transcript;
+    $("prompt").value +=
+      ($("prompt").value ? " " : "") + spoken;
+    autoResize();
   };
 
   recognition.onerror = () => {
-    listening = false;
-    document.getElementById("voiceButton").textContent = "🎙 Voice";
+    $("micBtn").textContent = "🎙";
   };
 
   recognition.onend = () => {
-    listening = false;
-    document.getElementById("voiceButton").textContent = "🎙 Voice";
+    $("micBtn").textContent = "🎙";
   };
-
-  recognition.start();
 }
+
+$("micBtn").onclick = () => {
+  if (!recognition) {
+    alert("Voice input is not supported in this browser. Try Chrome.");
+    return;
+  }
+
+  try {
+    recognition.start();
+    $("micBtn").textContent = "🔴";
+  } catch {
+    recognition.stop();
+    $("micBtn").textContent = "🎙";
+  }
+};
 
 /* =========================================
    VOICE OUTPUT
 ========================================= */
 
-function toggleSpeak() {
-  speakReplies = !speakReplies;
-
-  document.getElementById("speakToggle").textContent =
-    speakReplies ? "🔊 Read replies: ON" : "🔊 Read replies: OFF";
-
-  if (!speakReplies) speechSynthesis.cancel();
-}
-
 function speakText(text) {
   if (!("speechSynthesis" in window)) {
-    alert("Speech output is not supported in this browser.");
+    alert("Voice output is not supported in this browser.");
     return;
   }
 
-  speechSynthesis.cancel();
+  if (speaking) {
+    speechSynthesis.cancel();
+    speaking = false;
+    return;
+  }
 
   const cleanText = text
-    .replace(/```[\s\S]*?```/g,"Code block omitted.")
-    .replace(/[#*_`>\-|]/g," ")
-    .replace(/\[([^\]]+)\]\([^)]+\)/g,"$1");
+    .replace(/```[\s\S]*?```/g, "Code block omitted.")
+    .replace(/[#*`>|]/g, "")
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1");
 
   const utterance = new SpeechSynthesisUtterance(cleanText);
   utterance.lang = "en-IN";
   utterance.rate = 1;
-  utterance.pitch = 1;
+
+  utterance.onstart = () => speaking = true;
+  utterance.onend = () => speaking = false;
+  utterance.onerror = () => speaking = false;
 
   speechSynthesis.speak(utterance);
 }
 
 /* =========================================
-   PDF EXPORT OF AI RESPONSE
+   EXPORT CONVERSATION
 ========================================= */
 
-function createResponsePDF(text) {
-  if (!window.jspdf) {
-    alert("PDF library is unavailable.");
+$("exportBtn").onclick = () => {
+  const chat = currentChat();
+
+  if (!chat || !chat.messages.length) {
+    alert("There is no conversation to export.");
     return;
   }
 
-  const { jsPDF } = window.jspdf;
-  const pdf = new jsPDF();
+  const text = chat.messages.map(message => {
+    return (
+      (message.role === "user" ? "YOU" : "ZYROX") +
+      "\n" + message.content
+    );
+  }).join("\n\n-------------------------\n\n");
 
-  const lines = pdf.splitTextToSize(text,180);
-  let y = 15;
-
-  pdf.setFontSize(17);
-  pdf.text("ZYROX",15,y);
-  y += 12;
-
-  pdf.setFontSize(10);
-
-  lines.forEach(line => {
-    if (y > 280) {
-      pdf.addPage();
-      y = 15;
-    }
-
-    pdf.text(line,15,y);
-    y += 6;
+  const blob = new Blob([text], {
+    type: "text/plain;charset=utf-8"
   });
 
-  pdf.save("ZYROX-Response.pdf");
-}
-
-/* =========================================
-   EXPORT AND CLEAR
-========================================= */
-
-function exportChats() {
-  const blob = new Blob(
-    [JSON.stringify(chats,null,2)],
-    {type:"application/json"}
-  );
-
   const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
+  const link = document.createElement("a");
 
-  a.href = url;
-  a.download = "ZYROX-Conversations.json";
-  a.click();
+  link.href = url;
+  link.download = "ZYROX-Conversation.txt";
+  link.click();
 
   URL.revokeObjectURL(url);
-}
-
-function clearAllChats() {
-  if (!confirm("Delete all saved conversations?")) return;
-
-  chats = [];
-  currentId = null;
-  saveChats();
-  newChat();
-}
-
-function exportCurrentChat() {
-  const chat = getCurrentChat();
-  if (!chat) return;
-
-  const text = chat.messages.map(m =>
-    (m.role === "user" ? "YOU" : "ZYROX") + "\n" + m.content
-  ).join("\n\n----------------\n\n");
-
-  const blob = new Blob([text],{type:"text/plain"});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-
-  a.href = url;
-  a.download = "ZYROX-Conversation.txt";
-  a.click();
-
-  URL.revokeObjectURL(url);
-}
+};
 
 /* =========================================
-   STARTUP
+   MOBILE SIDEBAR
 ========================================= */
 
-if (!chats.length) {
-  newChat();
-} else {
-  currentId = chats[0].id;
-  renderHistory();
-  renderChat();
+function openSidebar() {
+  $("sidebar").classList.add("open");
+  $("overlay").classList.add("show");
 }
 
-document.getElementById("prompt").focus();
+function closeSidebar() {
+  $("sidebar").classList.remove("open");
+  $("overlay").classList.remove("show");
+}
 
+$("menuBtn").onclick = openSidebar;
+$("overlay").onclick = closeSidebar;
+
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape") closeSidebar();
+});
+
+/* =========================================
+   NEW CHAT
+========================================= */
+
+$("newChatBtn").onclick = createChat;
+
+/* =========================================
+   START APPLICATION
+========================================= */
+
+loadChats();
+
+if (!currentChatId) {
+  createChat();
+}
 </script>
 </body>
 </html>
